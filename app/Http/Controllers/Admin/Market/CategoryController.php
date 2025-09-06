@@ -57,7 +57,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd($id);
     }
 
     /**
@@ -69,7 +69,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**
@@ -80,6 +79,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        dd($id);
     }
 }

@@ -32,43 +32,46 @@
             </section>
 
             <section class="table-responsive">
+
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>نام دسته بندی</th>
-                            <th>دسته والد</th>
+                            <th>توضیحات</th>
+                            <th>اسالگ</th>
+                            <th>عکس</th>
+                            <th>تگ ها</th>
+                            <th>وضعیت</th>
                             <th class="max-width-16-rem text-center"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
+                    @foreach( $postCategories as $postCategory)
                         <tr>
-                            <th>1</th>
-                            <td>نمایشگر	</td>
-                            <td>کالای الکترونیکی</td>
+                            <th>{{ $postCategory->id }}</th>
+                            <th>{{ $postCategory->name }}</th>
+                            <th>{{ $postCategory->description }}</th>
+                            <th>{{ $postCategory->slug }}</th>
+                            <th><img src="{{ asset($postCategory->image) }}" width="50px" height="50px"></th>
+                            <th>{{ $postCategory->tags }}</th>
+                            <th>
+                                <label>
+                                    <input id="{{ $postCategory->id }}" onchange="changeStatus({{ $postCategory->id }})" data-url="{{ route('admin.content.category.status',$postCategory->id) }}"  type="checkbox" @if($postCategory->status == 1)
+                                               checked
+                                              @endif>
+                                </label>
+                            </th>
                             <td class="width-16-rem text-left">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                <a href="{{ route('admin.content.category.edit',[$postCategory->id]) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
+                                <form class="d-inline" action="{{ route('admin.content.category.destroy',[$postCategory->id]) }}" method="post">
+                                    @csrf
+                                    {{ method_field('delete') }}
+                                    <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                </form>
                             </td>
                         </tr>
-                        <tr>
-                            <th>2</th>
-                            <td>نمایشگر	</td>
-                            <td>کالای الکترونیکی</td>
-                            <td class="width-16-rem text-left">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>3</th>
-                            <td>نمایشگر	</td>
-                            <td>کالای الکترونیکی</td>
-                            <td class="width-16-rem text-left">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
-                            </td>
-                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </section>
@@ -76,5 +79,38 @@
         </section>
     </section>
 </section>
+
+@endsection
+
+@section('script')
+
+    <script type="text/javascript">
+
+        function changeStatus(id)
+        {
+            var element = $("#" + id)
+            var url = element.attr('data-url')
+            var elementValue = !element.prop('checked')
+            $.ajax({
+                url: url,
+                type: "get",
+                success: function (response){
+
+                    if (response.status)
+                    {
+                        if (response.checked)
+                            element.prop('checked',true)
+                        else
+                            element.prop('checked',false)
+                    }
+                    else
+                    {
+                        element.prop('checked',elementValue)
+                    }
+
+                }
+            })
+        }
+    </script>
 
 @endsection
