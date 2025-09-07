@@ -40,10 +40,10 @@ class CategoryController extends Controller
     public function store(PostCategoryRequest $request)
     {
         $inputs = $request->all();
-        $inputs['slug'] = str_replace(' ','-',$inputs['name']).'-'.Str::random(2);
         $inputs['image'] = 'image.png';
         PostCategory::create($inputs);
-        return redirect()->route('admin.content.category.index')->with('swal-success','دسته بندی جدید با موفقیت ثبت شد');
+        return redirect()->route('admin.content.category.index')->with('swal-success','دسته بندی جدید با موفقیت ثبت شد')
+        ;
     }
 
     /**
@@ -80,7 +80,7 @@ class CategoryController extends Controller
         $inputs = $request->all();
         $inputs['image'] = 'image.png';
         $postCategory->update($inputs);
-        return redirect()->route('admin.content.category.index');
+        return redirect()->route('admin.content.category.index')->with('swal-success','دسته بندی  با موفقیت ویرایش شد!');
     }
 
     /**
@@ -92,7 +92,7 @@ class CategoryController extends Controller
     public function destroy(PostCategory $postCategory)
     {
         $postCategory->delete();
-        return redirect()->back();
+        return redirect()->back()->with('swal-error','دسته بندی  با موفقیت حذف شد!');
     }
     public function status(PostCategory $postCategory)
     {
