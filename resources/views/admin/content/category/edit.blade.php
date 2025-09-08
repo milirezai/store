@@ -84,19 +84,41 @@
                             @enderror
                         </section>
 
-                        <section class="col-12 col-md-6">
+                        <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
-                                <label for="image">عکس</label>
-                                <input type="file" name="image" class="form-control form-control-sm" id="image">
+                                <label for="image">تصویر</label>
+                                <input type="file" class="form-control form-control-sm" name="image" id="image">
                             </div>
                             @error('image')
-                            <span class="alert-required text-danger" role="alert">
-                                <strong>
-                                    {{ $message }}
-                                </strong>
-                            </span>
+                            <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
                             @enderror
+
+                            <section class="row">
+                                @php
+                                    $number = 1;
+                                @endphp
+                                @foreach ($postCategory->image['indexArray'] as $key => $value )
+                                    <section class="col-md-{{ 6 / $number }}">
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" name="currentImage" value="{{ $key }}" id="{{ $number }}" @if($postCategory->image['currentImage'] == $key) checked @endif>
+                                            <label for="{{ $number }}" class="form-check-label mx-2">
+                                                <img src="{{ asset($value) }}" class="w-100" alt="">
+                                            </label>
+                                        </div>
+                                    </section>
+                                    @php
+                                        $number++;
+                                    @endphp
+                                @endforeach
+
+                            </section>
+
                         </section>
+
 
                         <section class="col-12">
                             <div class="form-group">

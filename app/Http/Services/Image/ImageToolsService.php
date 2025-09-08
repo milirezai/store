@@ -1,7 +1,6 @@
 <?php
-namespace App\Http\Servicess\Image;
 
-use function PHPUnit\Framework\fileExists;
+namespace App\Http\Services\Image;
 
 class ImageToolsService
 {
@@ -18,84 +17,113 @@ class ImageToolsService
     {
         $this->image = $image;
     }
-    public function settExclusiveDirectory($exclusiveDirectory)
-    {
-        $this->exclusiveDirectory = trim($exclusiveDirectory,'/\\');
-    }
+
     public function getExclusiveDirectory()
     {
         return $this->exclusiveDirectory;
     }
-    public function setImageDirectory($imageDirectory)
+
+    public function setExclusiveDirectory($exclusiveDirectory)
     {
-        $this->imageDirectory = trim($imageDirectory,'/\\');
+        $this->exclusiveDirectory = trim($exclusiveDirectory, '/\\');
     }
+
     public function getImageDirectory()
     {
         return $this->imageDirectory;
     }
-    public function setImageName($imageName)
+    public function setImageDirectory($imageDirectory)
     {
-        $this->imageName = $imageName;
+        $this->imageDirectory = trim($imageDirectory, '/\\');
     }
+
     public function getImageName()
     {
         return $this->imageName;
     }
+
+     public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+    }
+
     public function setCurrentImageName()
     {
-        return !empty($this->image) ? $this->setImageName(pathinfo($this->image->getClientOriginalName(), PATHINFO_FILENAME)) : false;
+            return !empty($this->image) ? $this->setImageName(pathinfo($this->image->getClientOriginalName(), PATHINFO_FILENAME)) : false;
+            // $_FILES['image']['name']
     }
+
     public function getImageFormat()
     {
         return $this->imageFormat;
     }
-    public function setImageFormat($imageFormat)
+
+   public function setImageFormat($imageFormat)
     {
         $this->imageFormat = $imageFormat;
     }
+
     public function getFinalImageDirectory()
     {
         return $this->finalImageDirectory;
     }
+
     public function setFinalImageDirectory($finalImageDirectory)
     {
         $this->finalImageDirectory = $finalImageDirectory;
     }
-    public function getFinalImageName()
+
+   public function getFinalImageName()
     {
         return $this->finalImageName;
     }
+
     public function setFinalImageName($finalImageName)
     {
         $this->finalImageName = $finalImageName;
     }
-    public function chackDirectory($imageDirectory)
+
+    protected function checkDirectory($imageDirectory)
     {
-        if (!fileExists($imageDirectory))
+        if(!file_exists($imageDirectory))
         {
-            mkdir($imageDirectory, 666, true);
+            mkdir($imageDirectory, 0755, true);
         }
     }
+
     public function getImageAddress()
     {
-        return $this->finalImageDirectory.DIRECTORY_SEPARATOR.$this->finalImageName;
+        return $this->finalImageDirectory . DIRECTORY_SEPARATOR . $this->finalImageName;
     }
+
     protected function provider()
     {
-        // set property
-        $this->getImageDirectory() ?? $this->setImageDirectory(date('Y').DIRECTORY_SEPARATOR.date('m').DIRECTORY_SEPARATOR.date('d'));
+        //set properties
+        $this->getImageDirectory() ?? $this->setImageDirectory(date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d'));
         $this->getImageName() ?? $this->setImageName(time());
-        $this->getImageFormat() ?? $this->setImageFormat($this->image->extesion());
+        $this->getImageFormat() ?? $this->setImageFormat($this->image->extension());
 
-        // set final image directory
-        $finalImageDirectory = empty($this->getExclusiveDirectory()) ? $this->getImageDirectory() : $this->getExclusiveDirectory().DIRECTORY_SEPARATOR.$this->getImageDirectory();
+
+        //set final image Directory
+        $finalImageDirectory = empty($this->getExclusiveDirectory()) ? $this->getImageDirectory() : $this->getExclusiveDirectory() . DIRECTORY_SEPARATOR . $this->getImageDirectory();
         $this->setFinalImageDirectory($finalImageDirectory);
 
-        // set finla image name
-        $this->setFinalImageName($this->getImageName().'.'.$this->getImageFormat());
+
+        //set final image name
+        $this->setFinalImageName($this->getImageName() . '.' . $this->getImageFormat());
+
 
         //check adn create final image directory
-        $this->chackDirectory($this->getFinalImageDirectory());
+        $this->checkDirectory($this->getFinalImageDirectory());
     }
+
+
+
+
+
+
+
+
+
+
 }

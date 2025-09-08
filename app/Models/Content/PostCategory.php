@@ -11,6 +11,7 @@ class PostCategory extends Model
 {
     use HasFactory , SoftDeletes, Sluggable;
     protected $fillable = ['name', 'description', 'slug', 'image', 'status', 'tags'];
+    protected $casts = ['image' => 'array'];
     public function sluggable(): array
     {
         return[
