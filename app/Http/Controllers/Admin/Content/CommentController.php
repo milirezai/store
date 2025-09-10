@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Content;
 
 use App\Http\Controllers\Controller;
+use App\Models\Content\Comment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -14,7 +15,8 @@ class CommentController extends Controller
      */
     public function index()
     {
-        return view('admin.content.comment.index');
+        $comments = Comment::orderBy('created_at','desc')->simplePaginate(15);
+        return view('admin.content.comment.index',compact('comments'));
 
     }
 
@@ -45,9 +47,9 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Comment $comment)
     {
-        return view('admin.content.comment.show');
+        return view('admin.content.comment.show',compact('comment'));
     }
 
     /**
@@ -83,4 +85,22 @@ class CommentController extends Controller
     {
         //
     }
+
+    public function status(Comment $comment)
+    {
+        $comment->status = $comment->status == 0 ? 1 : 0;
+        $result = $comment->save();
+        if ($result)
+        {
+            if ($comment->status == 0)
+                return response()->json(['status' => true, 'checked' => false]);
+            else
+                return response()->json(['status' => true, 'checked' => true]);
+        }
+        else
+        {
+            return response()->json(['status' => false]);
+        }
+    }
+
 }

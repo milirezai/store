@@ -21,7 +21,7 @@
         <section class="main-body-container">
             <section class="main-body-container-header">
                 <h5>
-                  ایجاد منو
+                  ویرایش منو
                 </h5>
             </section>
 
@@ -30,13 +30,14 @@
             </section>
 
             <section>
-                <form action="{{ route('admin.content.menu.store') }}" method="post" id="form">
+                <form action="{{ route('admin.content.menu.update',[$menu->id]) }}" method="post" id="form">
                     @csrf
+                    {{ method_field('put') }}
                     <section class="row">
                         <section class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="">عنوان منو</label>
-                                <input value="{{ old('name') }}" name="name" type="text" class="form-control form-control-sm">
+                                <input value="{{ old('name',$menu->name) }}" name="name" type="text" class="form-control form-control-sm">
                             </div>
                             @error('name')
                             <span class="alert-required text-danger" role="alert">
@@ -51,9 +52,10 @@
                             <div class="form-group">
                                 <label for="parent_id">منو والد</label>
                                 <select name="parent_id" id="parent_id" class="form-control form-control-sm">
-                                    <option value="">منوی اصلی</option>
-                                @foreach($menus as $menu)
-                                        <option value="{{ $menu->id }}" @if(old('parent_id') == $menu->id) selected @endif">{{ $menu->name }}</option>
+                                    <option value="">منو اصلی</option>
+                                @foreach($menus as $item)
+                                        <option value="{{ $item->id }}"
+                                            @if(old('parent_id',$menu->parent_id) == $item->id) selected @endif>{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -69,7 +71,7 @@
                         <section class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="">آدرس URL</label>
-                                <input value="{{ old('url') }}" type="text" name="url" class="form-control form-control-sm">
+                                <input value="{{ old('url',$menu->url) }}" type="text" name="url" class="form-control form-control-sm">
                             </div>
                             @error('url')
                             <span class="alert-required text-danger" role="alert">
