@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\admin\setting;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting\Setting;
+use Database\Seeders\SettingsSeeder;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -14,7 +16,13 @@ class SettingController extends Controller
      */
     public function index()
     {
-        return view('admin.setting.index');
+        $setting = Setting::first();
+        if ($setting === null)
+        {
+            $settingSeeder = new SettingsSeeder();
+            $settingSeeder->run();
+        }
+        return view('admin.setting.index', compact('setting'));
     }
 
     /**

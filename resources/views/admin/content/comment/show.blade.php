@@ -31,29 +31,31 @@
 
             <section class="card mb-3">
                 <section class="card-header text-white bg-custom-yellow">
-                    {{ $comment->author->fullName() }} - {{ $comment->author_id }}
+                    {{ $comment->author->fullName }} - {{ $comment->author_id }}
                 </section>
                 <section class="card-body">
-                    <h5 class="card-title">مشخصات کالا : ساعت هوشمند apple watch کد کالا : {{$comment->commentable_id}}</h5>
+                    <h5 class="card-title">مشخصات کالا : {{$comment->commentable->title }} کد کالا : {{$comment->commentable_id}}</h5>
                     <p class="card-text">{{ $comment->body }}</p>
                 </section>
             </section>
-
-            <section>
-                <form action="" method="">
-                    <section class="row">
-                        <section class="col-12">
-                            <div class="form-group">
-                                <label for="">پاسخ ادمین</label>
-                               ‍<textarea class="form-control form-control-sm" rows="4"></textarea>
-                            </div>
+            @if($comment->parent_id == null)
+                <section>
+                    <form action="{{ route('admin.content.comment.answer',[$comment->id]) }}" method="post">
+                        @csrf
+                        <section class="row">
+                            <section class="col-12">
+                                <div class="form-group">
+                                    <label for="">پاسخ ادمین</label>
+                                    <textarea name="body" class="form-control form-control-sm" rows="4"></textarea>
+                                </div>
+                            </section>
+                            <section class="col-12">
+                                <button class="btn btn-primary btn-sm">ثبت</button>
+                            </section>
                         </section>
-                        <section class="col-12">
-                            <button class="btn btn-primary btn-sm">ثبت</button>
-                        </section>
-                    </section>
-                </form>
-            </section>
+                    </form>
+                </section>
+            @endif
 
         </section>
     </section>

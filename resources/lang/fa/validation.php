@@ -162,6 +162,8 @@ return [
         "question"                   => 'سوال' ,
         "answer"                   => 'پاسخ' ,
         "url"                      => 'آدرس',
-        "parent_id"                => 'والد'
+        "parent_id"                => 'والد',
+        "subject"                => 'عنوان',
+
     ],
 ];

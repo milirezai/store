@@ -16939,7 +16939,7 @@ smoking-ban:
 sms:
   changes:
     - 5.6.0
-  label: SMS
+  label: SMSRequest
   search:
     terms:
       - chat

@@ -36,6 +36,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>پاسخ به</th>
                             <th>کد کاربر</th>
                             <th>نویسنده نظر</th>
                             <th>کد پست</th>
@@ -50,10 +51,11 @@
 
                             <tr>
                                 <th>{{ $key + 1 }}</th>
+                                <th>{{ $comment->parent_id }}</th>
                                 <td>{{ $comment->author_id }}</td>
-                                <td>{{ $comment->author->fullName() }}</td>
+                                <td>{{ $comment->author->fullName }}</td>
                                 <td>{{ $comment->commentable_id }}</td>
-                                <td>ایفون 12</td>
+                                <td>{{ $comment->commentable->title }}</td>
                                 <td>{{ $comment->approved == 1 ? 'تایید شده ' : 'تایید نشده'}} </td>
                                 <td>
                                     <label>
@@ -63,9 +65,9 @@
                                     </label>
                                 </td>
                                 <td class="width-16-rem text-left">
-                                    <a href="{{ route('admin.content.comment.show', [$comment->id]) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> نمایش</a>
+                                    <a href="{{ route('admin.content.comment.show', [$comment->id]) }}" class="btn btn-info btn-sm text-white"><i class="fa fa-eye "></i> نمایش</a>
 
-                                    <button class="btn {{ $comment->approved == 1 ? 'btn-warning' : 'btn-success' }} btn-sm" type="submit"><i class="fa fa-check"></i>{{ $comment->approved == 1 ? 'عدم تایید' : 'تایید' }}</button>
+                                    <a href="{{ route('admin.content.comment.approved',[$comment->id]) }}" class="btn {{ $comment->approved == 1 ? 'btn-warning' : 'btn-success' }} btn-sm" type="submit"><i class="fa fa-check text-white"></i>{{ $comment->approved == 1 ? 'عدم تایید' : 'تایید' }}</a>
 
                                 </td>
 
