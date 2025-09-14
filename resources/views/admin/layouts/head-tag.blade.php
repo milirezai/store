@@ -6,4 +6,6 @@
     <link rel="stylesheet" href="{{ asset('admin-assets/css/grid.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-assets/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-assets/sweetalert/sweetalert2.css') }}">
-   <link rel="stylesheet" href="{{ asset('admin-assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin-assets/css/style.css') }}">
+
+

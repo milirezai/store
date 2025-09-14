@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Ticket\TicketAdmin;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,12 +22,22 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array
      */
-    protected $fillable = ['name', 'email', 'password',];
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'email',
+        'mobile',
+        'status',
+        'user_type',
+        'activation',
+        'profile_photo_path',
+        'password',
+    ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * The attributes that should be hidden for arrays.
      *
      * @var array
      */
@@ -38,7 +49,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
@@ -58,5 +69,10 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function ticketAdmin()
+    {
+        return $this->hasOne(TicketAdmin::class);
     }
 }

@@ -37,7 +37,7 @@
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">نام</label>
-                                    <input type="text" name="first_name" class="form-control form-control-sm">
+                                    <input value="{{ old('first_name') }}" type="text" name="first_name" class="form-control form-control-sm">
                                 </div>
                                 @error('first_name')
                                 <span class="alert-required text-danger" role="alert">
@@ -50,7 +50,7 @@
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">نام خانوادگی</label>
-                                    <input type="text" name="last_name" class="form-control form-control-sm">
+                                    <input value="{{ old('last_name') }}" type="text" name="last_name" class="form-control form-control-sm">
                                 </div>
                                 @error('last_name')
                                 <span class="alert-required text-danger" role="alert">
@@ -63,7 +63,7 @@
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">ایمیل</label>
-                                    <input type="text" name="email" class="form-control form-control-sm">
+                                    <input value="{{ old('email') }}" type="text" name="email" class="form-control form-control-sm">
                                 </div>
                                 @error('email')
                                 <span class="alert-required text-danger" role="alert">
@@ -76,7 +76,7 @@
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for=""> شماره موبایل</label>
-                                    <input type="text" name="mobile" class="form-control form-control-sm">
+                                    <input value="{{ old('mobile') }}" type="text" name="mobile" class="form-control form-control-sm">
                                 </div>
                                 @error('mobile')
                                 <span class="alert-required text-danger" role="alert">

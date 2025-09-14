@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin\User;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminUserRequest extends FormRequest
+class CustomerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,6 @@ class AdminUserRequest extends FormRequest
      */
     public function rules()
     {
-
         if($this->isMethod('post')){
 
             return [
@@ -32,7 +31,7 @@ class AdminUserRequest extends FormRequest
                 'last_name' => 'required|max:120|min:1|regex:/^[ا-یa-zA-Zء-ي ]+$/u',
                 'mobile' => ['required','digits:11', 'unique:users'],
                 'email' => ['required','string','email','unique:users'],
-                'password' => ['required','unique:users', Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised(), 'confirmed'],
+                'password' => ['required','unique:users', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'confirmed'],
                 'image' => 'nullable|image|mimes:png,jpg,jpeg,gif',
                 'activation' => 'required|numeric|in:0,1',
             ];
