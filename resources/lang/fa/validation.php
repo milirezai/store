@@ -164,7 +164,8 @@ return [
         "url"                      => 'آدرس',
         "parent_id"                => 'والد',
         "subject"                => 'عنوان',
-        "keywords"                => 'کلمات کلیدی',
-
+        "amount"                => 'هزنیه',
+        "delivery_time"          => 'زمان ارسال',
+        "delivery_time_unit"       => 'واحد زمان ارسال',
     ],
 ];
