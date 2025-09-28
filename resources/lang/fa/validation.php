@@ -166,6 +166,15 @@ return [
         "subject"                => 'عنوان',
         "amount"                => 'هزنیه',
         "delivery_time"          => 'زمان ارسال',
-        "delivery_time_unit"       => 'واحد زمان ارسال',
+        "brand_id"             => 'برند',
+        "weight"       => 'وزن',
+        "length"       => 'طول',
+        "width"       => 'عرض',
+        "height"       => 'ارتفاع',
+        "price"       => 'قیمت',
+        "introduction"       => 'توضیحات',
+        "meta_key.*"       => 'ویژگی',
+        "meta_value.*"        => 'مقدار ویژگی',
+
     ],
 ];
