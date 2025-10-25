@@ -37,5 +37,8 @@ class Product extends Model
     {
         return $this->hasMany(ProductMeta::class);
     }
-
+    public function colors()
+    {
+        return $this->hasMany(ProductColor::class);
+    }
 }

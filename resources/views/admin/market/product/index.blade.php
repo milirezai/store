@@ -61,7 +61,7 @@
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                             <a href="" class="dropdown-item text-right"><i class="fa fa-images"></i> گالری</a>
-                                            <a href="" class="dropdown-item text-right"><i class="fa fa-list-ul"></i>مدیریت رنگ ها</a>
+                                            <a href="{{ route('admin.market.color.index',$product->id) }}" class="dropdown-item text-right"><i class="fa fa-list-ul"></i> رنگ ها</a>
                                             <a href="{{ route('admin.market.product.edit', $product->id) }}" class="dropdown-item text-right"><i class="fa fa-edit"></i> ویرایش</a>
                                             <form class="d-inline" action="{{ route('admin.market.product.destroy', $product->id) }}" method="post">
                                                 @csrf

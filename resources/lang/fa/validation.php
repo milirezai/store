@@ -175,6 +175,7 @@ return [
         "introduction"       => 'توضیحات',
         "meta_key.*"       => 'ویژگی',
         "meta_value.*"        => 'مقدار ویژگی',
-
+        'color_name'    => 'نام رنگ',
+        'price_increase'    => 'افزایش قیمت',
     ],
 ];
