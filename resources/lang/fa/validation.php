@@ -178,5 +178,8 @@ return [
         'color_name'    => 'نام رنگ',
         'price_increase'    => 'افزایش قیمت',
         'unit'     => 'واحد اندازه گیری',
+        'product_id'     => 'محصول',
+        'value'  =>  'مقدار'
+
     ],
 ];

@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\Ticket\TicketCategoryController;
 use App\Http\Controllers\Admin\Ticket\TicketPriorityController;
 use App\Http\Controllers\Admin\Ticket\TicketAdminController;
 use App\Http\Controllers\Admin\Market\ProductColorController;
+use App\Http\Controllers\Admin\Market\PropertyValueController;
 
 Route::get('/',function (){
     dd('home');
@@ -66,13 +67,16 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
         });
 
         //comment
-        Route::prefix('comment')->group(function(){
+        Route::prefix('comment')->group(function () {
             Route::get('/', [CommentController::class, 'index'])->name('admin.market.comment.index');
-            Route::get('/show', [CommentController::class, 'show'])->name('admin.market.comment.show');
+            Route::get('/show/{comment}', [CommentController::class, 'show'])->name('admin.market.comment.show');
             Route::post('/store', [CommentController::class, 'store'])->name('admin.market.comment.store');
             Route::get('/edit/{id}', [CommentController::class, 'edit'])->name('admin.market.comment.edit');
             Route::put('/update/{id}', [CommentController::class, 'update'])->name('admin.market.comment.update');
             Route::delete('/destroy/{id}', [CommentController::class, 'destroy'])->name('admin.market.comment.destroy');
+            Route::get('/approved/{comment}', [CommentController::class, 'approved'])->name('admin.market.comment.approved');
+            Route::get('/status/{comment}', [CommentController::class, 'status'])->name('admin.market.comment.status');
+            Route::post('/answer/{comment}', [CommentController::class, 'answer'])->name('admin.market.comment.answer');
         });
 
         //delivery
@@ -151,6 +155,14 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
             Route::get('/edit/{categoryAttribute}', [PropertyController::class, 'edit'])->name('admin.market.property.edit');
             Route::put('/update/{categoryAttribute}', [PropertyController::class, 'update'])->name('admin.market.property.update');
             Route::delete('/destroy/{categoryAttribute}', [PropertyController::class, 'destroy'])->name('admin.market.property.destroy');
+
+            //value
+            Route::get('/value/{categoryAttribute}', [PropertyValueController::class, 'index'])->name('admin.market.value.index');
+            Route::get('/value/create/{categoryAttribute}', [PropertyValueController::class, 'create'])->name('admin.market.value.create');
+            Route::post('/value/store/{categoryAttribute}', [PropertyValueController::class, 'store'])->name('admin.market.value.store');
+            Route::get('/value/edit/{categoryAttribute}/{value}', [PropertyValueController::class, 'edit'])->name('admin.market.value.edit');
+            Route::put('/value/update/{categoryAttribute}/{value}', [PropertyValueController::class, 'update'])->name('admin.market.value.update');
+            Route::delete('/value/destroy/{categoryAttribute}/{value}', [PropertyValueController::class, 'destroy'])->name('admin.market.value.destroy');
         });
 
         //store
@@ -160,7 +172,6 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
             Route::post('/store', [StoreController::class, 'store'])->name('admin.market.store.store');
             Route::get('/edit/{id}', [StoreController::class, 'edit'])->name('admin.market.store.edit');
             Route::put('/update/{id}', [StoreController::class, 'update'])->name('admin.market.store.update');
-            Route::delete('/destroy/{id}', [StoreController::class, 'destroy'])->name('admin.market.store.destroy');
         });
 
 
