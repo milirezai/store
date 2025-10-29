@@ -179,7 +179,15 @@ return [
         'price_increase'    => 'افزایش قیمت',
         'unit'     => 'واحد اندازه گیری',
         'product_id'     => 'محصول',
-        'value'  =>  'مقدار'
-
+        'value'  =>  'مقدار',
+        'receiver'   => 'تحویل گیرنده',
+        'deliverer'   => 'تحویل دهنده',
+        'marketable_number'   => 'تعداد',
+        'percentage'    => 'درصد تخفیف',
+        'discount_ceiling'    => 'حداکثر تخفیف',
+        'minimal_order_amount'    => 'حداقل مبلغ خرید',
+//        ''    => '',
+//        ''    => '',
+//        ''    => '',
     ],
 ];

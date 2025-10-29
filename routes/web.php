@@ -90,14 +90,23 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
             Route::get('/status/{delivery}', [DeliveryController::class, 'status'])->name('admin.market.delivery.status');
         });
 
-        //discount
-        Route::prefix('discount')->group(function(){
+        // discount
+        Route::prefix('discount')->group(function () {
             Route::get('/copan', [DiscountController::class, 'copan'])->name('admin.market.discount.copan');
             Route::get('/copan/create', [DiscountController::class, 'copanCreate'])->name('admin.market.discount.copan.create');
             Route::get('/common-discount', [DiscountController::class, 'commonDiscount'])->name('admin.market.discount.commonDiscount');
+            Route::post('/common-discount/store', [DiscountController::class, 'commonDiscountStore'])->name('admin.market.discount.commonDiscount.store');
+            Route::get('/common-discount/edit/{commonDiscount}', [DiscountController::class, 'commonDiscountEdit'])->name('admin.market.discount.commonDiscount.edit');
+            Route::put('/common-discount/update/{commonDiscount}', [DiscountController::class, 'commonDiscountUpdate'])->name('admin.market.discount.commonDiscount.update');
+            Route::delete('/common-discount/destroy/{commonDiscount}', [DiscountController::class, 'commonDiscountDestroy'])->name('admin.market.discount.commonDiscount.destroy');
             Route::get('/common-discount/create', [DiscountController::class, 'commonDiscountCreate'])->name('admin.market.discount.commonDiscount.create');
             Route::get('/amazing-sale', [DiscountController::class, 'amazingSale'])->name('admin.market.discount.amazingSale');
             Route::get('/amazing-sale/create', [DiscountController::class, 'amazingSaleCreate'])->name('admin.market.discount.amazingSale.create');
+            Route::post('/amazing-sale/store', [DiscountController::class, 'amazingSaleStore'])->name('admin.market.discount.amazingSale.store');
+            Route::get('/amazing-sale/edit/{amazingSale}', [DiscountController::class, 'amazingSaleEdit'])->name('admin.market.discount.amazingSale.edit');
+            Route::put('/amazing-sale/update/{amazingSale}', [DiscountController::class, 'amazingSaleUpdate'])->name('admin.market.discount.amazingSale.update');
+            Route::delete('/amazing-sale/destroy/{amazingSale}', [DiscountController::class, 'amazingSaleDestroy'])->name('admin.market.discount.amazingSale.destroy');
+
         });
 
         //order
@@ -120,8 +129,10 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
             Route::get('/', [PaymentController::class, 'index'])->name('admin.market.payment.index');
             Route::get('/online', [PaymentController::class, 'online'])->name('admin.market.payment.online');
             Route::get('/offline', [PaymentController::class, 'offline'])->name('admin.market.payment.offline');
-            Route::get('/attendance', [PaymentController::class, 'attendance'])->name('admin.market.payment.attendance');
-            Route::get('/confirm', [PaymentController::class, 'confirm'])->name('admin.market.payment.confirm');
+            Route::get('/cash', [PaymentController::class, 'cash'])->name('admin.market.payment.cash');
+            Route::get('/canceled/{payment}', [PaymentController::class, 'canceled'])->name('admin.market.payment.canceled');
+            Route::get('/returned/{payment}', [PaymentController::class, 'returned'])->name('admin.market.payment.returned');
+            Route::get('/show/{payment}', [PaymentController::class, 'show'])->name('admin.market.payment.show');
         });
 
         //product
@@ -168,10 +179,10 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
         //store
         Route::prefix('store')->group(function(){
             Route::get('/', [StoreController::class, 'index'])->name('admin.market.store.index');
-            Route::get('/add-to-store', [StoreController::class, 'addToStore'])->name('admin.market.store.add-to-store');
-            Route::post('/store', [StoreController::class, 'store'])->name('admin.market.store.store');
-            Route::get('/edit/{id}', [StoreController::class, 'edit'])->name('admin.market.store.edit');
-            Route::put('/update/{id}', [StoreController::class, 'update'])->name('admin.market.store.update');
+            Route::get('/add-to-store/{product}', [StoreController::class, 'addToStore'])->name('admin.market.store.add-to-store');
+            Route::post('/store/{product}', [StoreController::class, 'store'])->name('admin.market.store.store');
+            Route::get('/edit/{product}', [StoreController::class, 'edit'])->name('admin.market.store.edit');
+            Route::put('/update/{product}', [StoreController::class, 'update'])->name('admin.market.store.update');
         });
 
 

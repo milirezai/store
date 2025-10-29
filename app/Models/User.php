@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Content\Comment;
+use App\Models\Market\Payment;
 use App\Models\Ticket\Ticket;
 use App\Models\User\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -90,5 +91,10 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }
