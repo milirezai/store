@@ -48,7 +48,7 @@
                                 </select>
                             </div>
                             @error('product_id')
-                            <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                            <span class="alert_required  text-white p-1 rounded" role="alert">
                                 <strong>
                                     {{ $message }}
                                 </strong>
@@ -62,7 +62,7 @@
                                 <input type="text" class="form-control form-control-sm" name="percentage" value="{{ old('percentage') }}">
                             </div>
                             @error('percentage')
-                            <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                            <span class="alert_required  text-white p-1 rounded" role="alert">
                                 <strong>
                                     {{ $message }}
                                 </strong>
@@ -78,7 +78,7 @@
                                 <input type="text" id="start_date_view" class="form-control form-control-sm">
                             </div>
                             @error('start_date')
-                            <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                            <span class="alert_required  text-white p-1 rounded" role="alert">
                                 <strong>
                                     {{ $message }}
                                 </strong>
@@ -93,7 +93,7 @@
                                 <input type="text" id="end_date_view" class="form-control form-control-sm">
                             </div>
                             @error('end_date')
-                            <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                            <span class="alert_required  text-white p-1 rounded" role="alert">
                                 <strong>
                                     {{ $message }}
                                 </strong>
@@ -110,7 +110,7 @@
                                 </select>
                             </div>
                             @error('status')
-                            <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                            <span class="alert_required  text-white p-1 rounded" role="alert">
                                 <strong>
                                     {{ $message }}
                                 </strong>
