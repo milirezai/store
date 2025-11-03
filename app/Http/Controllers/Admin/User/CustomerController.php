@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\User;
 
 use App\Models\User;
+use App\Notifications\NewUserRegistered;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -55,6 +56,9 @@ class CustomerController extends Controller
         $inputs['password'] = Hash::make($request->password);
         $inputs['user_type'] = 0;
         $user = User::create($inputs);
+        $details = ['message' => 'یک کاربر جدید در سایت ثبت نام کرد'];
+        $adminUser = User::find(2);
+        $adminUser->notify(new NewUserRegistered($details));
         return redirect()->route('admin.user.customer.index')->with('swal-success', 'مشتری جدید با موفقیت ثبت شد');
     }
 

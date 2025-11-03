@@ -33,10 +33,8 @@ use App\Http\Controllers\Admin\Ticket\TicketPriorityController;
 use App\Http\Controllers\Admin\Ticket\TicketAdminController;
 use App\Http\Controllers\Admin\Market\ProductColorController;
 use App\Http\Controllers\Admin\Market\PropertyValueController;
+use App\Http\Controllers\Admin\NotificationController;
 
-Route::get('/',function (){
-    dd('home');
-});
 
 Route::prefix('admin')->namespace('Admin')->group(function(){
 
@@ -122,6 +120,7 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
             Route::get('/canceled', [OrderController::class, 'canceled'])->name('admin.market.order.canceled');
             Route::get('/returned', [OrderController::class, 'returned'])->name('admin.market.order.returned');
             Route::get('/show/{order}', [OrderController::class, 'show'])->name('admin.market.order.show');
+            Route::get('/show/{order}/detail', [OrderController::class, 'detail'])->name('admin.market.order.show.detail');
             Route::get('/change-send-status/{order}', [OrderController::class, 'changeSendStatus'])->name('admin.market.order.changeSendStatus');
             Route::get('/change-order-status/{order}', [OrderController::class, 'changeOrderStatus'])->name('admin.market.order.changeOrderStatus');
             Route::get('/cancel-order/{order}', [OrderController::class, 'cancelOrder'])->name('admin.market.order.cancelOrder');
@@ -408,8 +407,14 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
     });
 
 
+    Route::post('/notification/read-all', [NotificationController::class, 'readAll'])->name('admin.notification.readAll');
 
 });
+
+Route::get('/',function (){
+    return view('customer.home');
+})->name('customer.home');
+
 
 Route::middleware([
     'auth:sanctum',
