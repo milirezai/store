@@ -34,7 +34,7 @@ use App\Http\Controllers\Admin\Ticket\TicketAdminController;
 use App\Http\Controllers\Admin\Market\ProductColorController;
 use App\Http\Controllers\Admin\Market\PropertyValueController;
 use App\Http\Controllers\Admin\NotificationController;
-
+use App\Http\Controllers\Auth\Customer\LoginRegisterController;
 
 Route::prefix('admin')->namespace('Admin')->group(function(){
 
@@ -411,9 +411,39 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
 
 });
 
+// home
 Route::get('/',function (){
     return view('customer.home');
 })->name('customer.home');
+
+
+// auth
+
+Route::namespace('Auth')->group(function (){
+    Route::get('login-register',[LoginRegisterController::class,'form'])->name('auth.customer.login-register.form');
+    Route::post('login-register',[LoginRegisterController::class,'loginRegister'])->name('auth.customer.login-register');
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Route::middleware([
@@ -425,3 +455,4 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
