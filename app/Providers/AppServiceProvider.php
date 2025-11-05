@@ -15,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('message',function (){
+            return new \App\Http\Services\Message\Message();
+        });
     }
 
     /**

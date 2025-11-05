@@ -2,6 +2,11 @@
 
 return [
 
+
+    'messagingـservices' => [
+        'mail' => \App\Http\Services\Message\Mail\Mail::class
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
