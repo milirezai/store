@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth\Customer;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 
 class LoginRegisterRequest extends FormRequest
 {
@@ -23,14 +24,24 @@ class LoginRegisterRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'id' => 'required|min:11|max:64|regex:/^[a-zA-Z0-9_.@\+]*$/',
-        ];
+        $route = Route::current();
+        if ($route->getName() === 'auth.customer.login-register'){
+            return [
+                'id' => 'required|min:11|max:64|regex:/^[a-zA-Z0-9_.@\+]*$/',
+            ];
+        }
+        elseif ($route->getName() === 'auth.customer.login-confirm'){
+            return [
+                'otp_code' => 'required|min:6|max:6',
+            ];
+        }
+
     }
 
     public function attributes(){
         return [
-            'id' => 'ایمیل یا شماره موبایل'
+            'id' => 'ایمیل یا شماره موبایل',
+            'otp_code' => 'کد یک بار مصرف'
         ];
     }
 
