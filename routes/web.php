@@ -35,6 +35,8 @@ use App\Http\Controllers\Admin\Market\ProductColorController;
 use App\Http\Controllers\Admin\Market\PropertyValueController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Auth\Customer\LoginRegisterController;
+use App\Http\Controllers\Admin\Content\BannerController;
+use App\Http\Controllers\Customer\HomeController;
 
 Route::prefix('admin')->namespace('Admin')->group(function(){
 
@@ -259,6 +261,17 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
             Route::get('/commentable/{post}', [PostController::class, 'commentable'])->name('admin.content.post.commentable');
         });
 
+        //banner
+        Route::prefix('banner')->group(function () {
+            Route::get('/', [BannerController::class, 'index'])->name('admin.content.banner.index');
+            Route::get('/create', [BannerController::class, 'create'])->name('admin.content.banner.create');
+            Route::post('/store', [BannerController::class, 'store'])->name('admin.content.banner.store');
+            Route::get('/edit/{banner}', [BannerController::class, 'edit'])->name('admin.content.banner.edit');
+            Route::put('/update/{banner}', [BannerController::class, 'update'])->name('admin.content.banner.update');
+            Route::delete('/destroy/{banner}', [BannerController::class, 'destroy'])->name('admin.content.banner.destroy');
+            Route::get('/status/{banner}', [BannerController::class, 'status'])->name('admin.content.banner.status');
+        });
+
 
     });
 
@@ -412,13 +425,11 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
 });
 
 // home
-Route::get('/',function (){
-    return view('customer.home');
-})->name('customer.home');
+Route::get('/',[HomeController::class,'home'])->name('customer.home');
+
 
 
 // auth
-
 Route::namespace('Auth')->group(function (){
 
     Route::get('login-register',[LoginRegisterController::class,'form'])->name('auth.customer.login-register.form');
