@@ -25,7 +25,8 @@ class ProductColorRequest extends FormRequest
     {
         return [
             'color_name' => 'required|max:120|min:2|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي., ]+$/u',
-            'price_increase' => 'required|numeric'
+            'price_increase' => 'required|numeric',
+            'color' => 'required|max:120|min:5'
         ];
     }
 }

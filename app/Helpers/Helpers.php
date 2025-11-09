@@ -60,7 +60,12 @@ function convertEnglishToPersian($number)
 
 function priceFormat($price)
 {
-    $price = number_format($price, 0, '/', '،');
+    $price = number_format($price, 0, '/', ',');
     $price = convertEnglishToPersian($price);
     return $price;
+}
+
+function strLimit($text,$number)
+{
+    return \Illuminate\Support\Str::limit($text,$number);
 }

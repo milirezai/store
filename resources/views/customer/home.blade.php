@@ -64,16 +64,16 @@
                                                 <section class="product-add-to-favorite"><a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="افزودن به علاقه مندی"><i class="fa fa-heart"></i></a></section>
                                                 <a class="product-link" href="#">
                                                     <section class="product-image">
-                                                        <img class="" src="{{ asset($mostVisitedProduct->image['indexArray'][$mostVisitedProduct->image['currentImage']]) }}" alt="">
+                                                        <img class="" src="{{ asset($mostVisitedProduct->image['indexArray']['medium']) }}" alt="">
                                                     </section>
                                                     <section class="product-colors"></section>
-                                                    <section class="product-name"><h3>گوشی موبایل شیائومی مدل POCO X3 Pro M2102J20SG دو ...</h3></section>
+                                                    <section class="product-name"><h3>{{ strLimit($mostVisitedProduct->name,20) }}</h3></section>
                                                     <section class="product-price-wrapper">
                                                         <section class="product-discount">
-                                                            <span class="product-old-price">6,895,000 </span>
-                                                            <span class="product-discount-amount">10%</span>
+{{--                                                            <span class="product-old-price">{{ priceFormat($mostVisitedProduct->price) }}</span>--}}
+{{--                                                            <span class="product-discount-amount">10%</span>--}}
                                                         </section>
-                                                        <section class="product-price">6,264،000 تومان</section>
+                                                        <section class="product-price">{{ priceFormat($mostVisitedProduct->price) }}تومان  </section>
                                                     </section>
                                                     <section class="product-colors">
                                                         <section class="product-colors-item" style="background-color: white;"></section>
@@ -103,13 +103,20 @@
         <section class="container-xxl">
             <!-- two column-->
             <section class="row py-4">
-                <section class="col-12 col-md-6 mt-2 mt-md-0"><img class="d-block rounded-2 w-100" src="assets/images/ads/two-col-1.jpg" alt=""></section>
-                <section class="col-12 col-md-6 mt-2 mt-md-0"><img class="d-block rounded-2 w-100" src="assets/images/ads/two-col-2.jpg" alt=""></section>
+                @foreach ($middleBanners as $middleBanner)
+                    <section class="col-12 col-md-6 mt-2 mt-md-0">
+                        <a href="{{ urldecode($middleBanner->url) }}">
+                            <img class="d-block rounded-2 w-100" src="{{ asset($middleBanner->image) }}" alt="{{ $middleBanner->title }}">
+                        </a>
+                    </section>
+                @endforeach
+
             </section>
 
         </section>
     </section>
     <!-- end ads section -->
+
 
 
     <!-- start product lazy load -->
