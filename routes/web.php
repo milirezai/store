@@ -38,6 +38,9 @@ use App\Http\Controllers\Auth\Customer\LoginRegisterController;
 use App\Http\Controllers\Admin\Content\BannerController;
 use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\Admin\Market\GuaranteeController;
+use App\Http\Controllers\Customer\Market\ProductController as MarketProductController;
+
+
 
 Route::prefix('admin')->namespace('Admin')->group(function(){
 
@@ -433,6 +436,13 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
 
 // home
 Route::get('/',[HomeController::class,'home'])->name('customer.home');
+
+Route::namespace('Market')->group(function () {
+
+    Route::get('/product/{product:slug}', [MarketProductController::class, 'product'])->name('customer.market.product');
+    Route::post('/add-comment/prodcut/{product:slug}', [MarketProductController::class, 'addComment'])->name('customer.market.add-comment');
+
+});
 
 
 

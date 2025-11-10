@@ -69,3 +69,9 @@ function strLimit($text,$number)
 {
     return \Illuminate\Support\Str::limit($text,$number);
 }
+
+
+function discount($price,$discount)
+{
+    return $price * $discount / 100;
+}
