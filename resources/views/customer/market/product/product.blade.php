@@ -74,26 +74,37 @@
                                     @endphp
 
                                     @if($colors->count() != 0)
-                                        <p><span>رنگ : {{ $colors->first()->color_name }}</span></p>
+                                        <p><span>رنگ انتخاب شده :   <span id="selected_color_name">{{ $colors->first()->color_name }}</span></span></p>
                                         <p>
+
                                             @foreach ($colors as $key => $color)
 
-                                                <span style="background-color: {{ $color->color ?? '#ffffff' }};" class="product-info-colors me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $color->color_name }}"></span>
+                                                <label for="{{ 'color_' . $color->id }}" style="background-color: {{ $color->color ?? '#ffffff' }};" class="product-info-colors me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $color->color_name }}"></label>
+
+                                                <input class="d-none" type="radio" name="color" id="{{ 'color_' . $color->id }}" value="{{ $color->id }}" data-color-name="{{ $color->color_name }}" data-color-price={{ $color->price_increase }} @if($key == 0) checked @endif>
                                             @endforeach
 
                                         </p>
                                     @endif
 
+
                                     @php
                                         $guarantees = $product->guarantees()->get();
                                     @endphp
                                     @if($guarantees->count() != 0)
-                                        @foreach ($guarantees as $key => $guarantee)
 
-                                            <p><i class="fa fa-shield-alt cart-product-selected-warranty me-1"></i> <span>{{ $guarantee->name }}</span></p>
-                                        @endforeach
+                                        <p><i class="fa fa-shield-alt cart-product-selected-warranty me-1"></i>
+                                            گارانتی :
+                                            <select name="guarantee" id="guarantee" class="p-1">
+                                                @foreach ($guarantees as $key => $guarantee)
+                                                    <option value="{{ $guarantee->id }}" data-guarantee-price={{ $guarantee->price_increase }}  @if($key == 0) selected @endif>{{ $guarantee->name }}</option>
+                                                @endforeach
+
+                                            </select>
+                                        </p>
 
                                     @endif
+
 
 
 
@@ -111,9 +122,9 @@
                                     <p><a class="btn btn-light  btn-sm text-decoration-none" href="#"><i class="fa fa-heart text-danger"></i> افزودن به علاقه مندی</a></p>
                                     <section>
                                         <section class="cart-product-number d-inline-block ">
-                                            <button class="cart-number-down" type="button">-</button>
-                                            <input class="" type="number" min="1" max="5" step="1" value="1" readonly="readonly">
-                                            <button class="cart-number-up" type="button">+</button>
+                                            <button class="cart-number cart-number-down" type="button">-</button>
+                                            <input type="number" id="number" name="number" min="1" max="{{ $product->marketable_number }}" step="1" value="1" readonly="readonly">
+                                            <button class="cart-number cart-number-up" type="button">+</button>
                                         </section>
                                     </section>
                                     <p class="mb-3 mt-5">
@@ -129,7 +140,7 @@
                             <section class="content-wrapper bg-white p-3 rounded-2 cart-total-price">
                                 <section class="d-flex justify-content-between align-items-center">
                                     <p class="text-muted">قیمت کالا</p>
-                                    <p class="text-muted">{{ priceFormat($product->price) }}<span class="small">تومان</span></p>
+                                    <p class="text-muted"><span id="product_price" data-product-original-price={{ $product->price }}>{{ priceFormat($product->price) }}</span> <span class="small">تومان</span></p>
                                 </section>
 
                                 @if(!empty($product->activeAmazingSales()))
@@ -138,7 +149,7 @@
                                         @php
                                            $discount = discount($product->price,$product->activeAmazingSales()->percentage);
                                         @endphp
-                                        <p class="text-danger fw-bolder">{{ priceFormat($discount) }}<span class="small">تومان</span></p>
+                                        <p class="text-danger fw-bolder" id="product-discount-price" data-product-discount-price="{{  $discount }}">{{ priceFormat($discount) }} <span class="small">تومان</span></p>
                                     </section>
                                 @endif
 
@@ -147,7 +158,7 @@
                                 <section class="border-bottom mb-3"></section>
 
                                 <section class="d-flex justify-content-end align-items-center">
-                                    <p class="fw-bolder">{{ !empty($product->activeAmazingSales()) ? priceFormat($product->price - $discount)  : priceFormat($product->price)  }}<span class="small">تومان</span></p>
+                                    <p class="fw-bolder"><span  id="final-price"></span> <span class="small">تومان</span></p>
                                 </section>
 
                                 <section class="">
@@ -207,11 +218,9 @@
                                                         <section class="product-price">{{ priceFormat($relatedProduct->price) }} تومان</section>
                                                     </section>
                                                     <section class="product-colors">
-                                                        <section class="product-colors-item" style="background-color: yellow;"></section>
-                                                        <section class="product-colors-item" style="background-color: green;"></section>
-                                                        <section class="product-colors-item" style="background-color: white;"></section>
-                                                        <section class="product-colors-item" style="background-color: blue;"></section>
-                                                        <section class="product-colors-item" style="background-color: red;"></section>
+                                                        @foreach ($relatedProduct->colors()->get() as $color)
+                                                            <section class="product-colors-item" style="background-color: {{ $color->color }};"></section>
+                                                        @endforeach
                                                     </section>
                                                 </a>
                                             </section>
@@ -422,4 +431,74 @@
     </section>
     <!-- end description, features and comments -->
 
+@endsection
+
+
+@section('script')
+    <script>
+        $(document).ready(function(){
+            bill();
+            //input color
+            $('input[name="color"]').change(function(){
+                bill();
+            })
+            //guarantee
+            $('select[name="guarantee"]').change(function(){
+                bill();
+            })
+            //number
+            $('.cart-number').click(function(){
+                bill();
+            })
+        })
+
+        function bill() {
+            if($('input[name="color"]:checked').length != 0){
+                var selected_color = $('input[name="color"]:checked');
+                $("#selected_color_name").html(selected_color.attr('data-color-name'));
+            }
+
+            //price computing
+            var selected_color_price = 0;
+            var selected_guarantee_price = 0;
+            var number = 1;
+            var product_discount_price = 0;
+            var product_original_price = parseFloat($('#product_price').attr('data-product-original-price'));
+
+            if($('input[name="color"]:checked').length != 0)
+            {
+                selected_color_price = parseFloat(selected_color.attr('data-color-price'));
+            }
+
+            if($('#guarantee option:selected').length != 0)
+            {
+                selected_guarantee_price = parseFloat($('#guarantee option:selected').attr('data-guarantee-price'));
+            }
+
+            if($('#number').val() > 0)
+            {
+                number = parseFloat($('#number').val());
+            }
+
+            if($('#product-discount-price').length != 0)
+            {
+                product_discount_price = parseFloat($('#product-discount-price').attr('data-product-discount-price'));
+            }
+
+            //final price
+            var product_price = product_original_price + selected_color_price + selected_guarantee_price;
+            var final_price = number * (product_price - product_discount_price);
+            $('#product-price').html(toFarsiNumber(product_price));
+            $('#final-price').html(toFarsiNumber(final_price));
+        }
+
+        function toFarsiNumber(number)
+        {
+            const farsiDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            // add comma
+            number = new Intl.NumberFormat().format(number);
+            //convert to persian
+            return number.toString().replace(/\d/g, x => farsiDigits[x]);
+        }
+    </script>
 @endsection

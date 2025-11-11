@@ -2,6 +2,7 @@
 
 namespace App\Models\Market;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -79,5 +80,9 @@ class Product extends Model
         return $this->comments()->where('approved', 1)->whereNull('parent_id')->get();
     }
 
+    public function user()
+    {
+        return $this->belongsToMany(User::class);
+    }
 
 }
