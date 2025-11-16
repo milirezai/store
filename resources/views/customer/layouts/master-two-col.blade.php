@@ -8,6 +8,8 @@
 
     @include('customer.layouts.header')
 
+    @include('admin.alerts.alert-section.success')
+
     <section class="container-xxl body-container">
         @yield('customer.layouts.sidebar')
     </section>

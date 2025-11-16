@@ -4,6 +4,7 @@
 @section('content')
 
 
+
     <!-- start slideshow -->
     <section class="container-xxl my-4">
         <section class="row">
@@ -93,7 +94,7 @@
                                                         <img class="" src="{{ asset($mostVisitedProduct->image['indexArray']['medium']) }}" alt="{{ $mostVisitedProduct->name }}">
                                                     </section>
                                                     <section class="product-colors"></section>
-                                                    <section class="product-name"><h3>{{ Str::limit($mostVisitedProduct->name, 10) }}</h3></section>
+                                                    <section class="product-name"><h3>{{ Str::limit($mostVisitedProduct->name, 20) }}</h3></section>
                                                     <section class="product-price-wrapper">
                                                         <section class="product-discount">
                                                             {{-- <span class="product-old-price">6,895,000 </span> --}}
@@ -170,13 +171,35 @@
                                         <section class="lazyload-item-wrapper">
                                             <section class="product">
                                                 {{-- <section class="product-add-to-cart"><a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="افزودن به سبد خرید"><i class="fa fa-cart-plus"></i></a></section> --}}
-{{--                                                 <section class="product-add-to-favorite"><a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="افزودن به علاقه مندی"><i class="fa fa-heart"></i></a></section>--}}
+                                                @guest
+                                                    <section class="product-add-to-favorite">
+                                                        <button class="btn btn-light btn-sm text-decoration-none" data-url="{{ route('customer.market.add-to-favorite', $offerProduct) }}" data-bs-toggle="tooltip" data-bs-placement="left" title="اضافه از علاقه مندی">
+                                                            <i class="fa fa-heart"></i>
+                                                        </button>
+                                                    </section>
+                                                @endguest
+                                                @auth
+                                                    @if ($offerProduct->user->contains(auth()->user()->id))
+                                                        <section class="product-add-to-favorite">
+                                                            <button class="btn btn-light btn-sm text-decoration-none" data-url="{{ route('customer.market.add-to-favorite', $offerProduct) }}" data-bs-toggle="tooltip" data-bs-placement="left" title="حذف از علاقه مندی">
+                                                                <i class="fa fa-heart text-danger"></i>
+                                                            </button>
+                                                        </section>
+                                                    @else
+                                                        <section class="product-add-to-favorite">
+                                                            <button class="btn btn-light btn-sm text-decoration-none" data-url="{{ route('customer.market.add-to-favorite', $offerProduct) }}" data-bs-toggle="tooltip" data-bs-placement="left" title="اضافه به علاقه مندی">
+                                                                <i class="fa fa-heart"></i>
+                                                            </button>
+                                                        </section>
+                                                    @endif
+                                                @endauth
+
                                                 <a class="product-link" href="{{ route('customer.market.product', $offerProduct) }}">
                                                     <section class="product-image">
                                                         <img class="" src="{{ asset($offerProduct->image['indexArray']['medium']) }}" alt="{{ $offerProduct->name }}">
                                                     </section>
                                                     <section class="product-colors"></section>
-                                                    <section class="product-name"><h3>{{ Str::limit($offerProduct->name, 10) }}</h3></section>
+                                                    <section class="product-name"><h3>{{ Str::limit($offerProduct->name, 20) }}</h3></section>
                                                     <section class="product-price-wrapper">
                                                         <section class="product-discount">
                                                             {{-- <span class="product-old-price">6,895,000 </span> --}}
@@ -264,8 +287,12 @@
 
 
     <section class="position-fixed p-4 flex-row-reverse" style="z-index: 909999999; left: 0; top: 3rem; width: 26rem; max-width: 80%;">
-        <section class="toast" data-delay="5000">
-            <section class="toast-body py-3 d-flex text-dark bg-warning">
+        <div class="toast"  data-delay="7000" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">فروشگاه</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
                 <strong class="ml-auto">
                     برای افزودن کالا به لیست علاقه مندی ها باید ابتدا وارد حساب کاربری خود شوید
                     <br>
@@ -273,11 +300,8 @@
                         ثبت نام / ورود
                     </a>
                 </strong>
-{{--                <button type="button" class="ml-2 mb-1 close btn btn-danger" data-dismiss="toast" aria-label="Close">--}}
-{{--                    <span aria-hidden="true">&times;</span>--}}
-{{--                </button>--}}
-            </section>
-        </section>
+            </div>
+        </div>
     </section>
 
 

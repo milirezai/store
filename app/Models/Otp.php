@@ -10,7 +10,7 @@ class Otp extends Model
     use HasFactory;
     protected $fillable = ['token','user_id','otp_code','login_id','type','used','status'];
 
-    public function code()
+    public static function code()
     {
         return rand(111111,999999);
     }

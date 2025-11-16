@@ -47,14 +47,14 @@
                                 <section><a class="dropdown-item" href="my-orders.html"><i class="fa fa-newspaper"></i>سفارشات</a></section>
                                 <section><a class="dropdown-item" href="my-favorites.html"><i class="fa fa-heart"></i>لیست علاقه مندی</a></section>
                                 <section><hr class="dropdown-divider"></section>
-                                <section><a class="dropdown-item" href="#"><i class="fa fa-sign-out-alt"></i>خروج</a></section>
+                                <section><a class="dropdown-item" href="{{ route('auth.customer.logout') }}"><i class="fa fa-sign-out-alt"></i>خروج</a></section>
 
                             </section>
                             @endauth
 
 
                             @guest
-                                <a href="{{ route('auth.customer.login-register-form') }}" class="btn btn-link text-decoration-none text-dark profile-button">
+                                <a href="{{ route('auth.customer.login-register.form') }}" class="btn btn-link text-decoration-none text-dark profile-button">
                                     <i class="fa fa-user-lock"></i>
                                 </a>
                             @endguest
@@ -62,7 +62,7 @@
 
 
                         <section class="header-cart d-inline ps-3 border-start position-relative">
-                            <a class="btn btn-link position-relative text-dark header-cart-link" href="javascript:void(0)">
+                            <a class="btn btn-link position-relative text-dark header-cart-link" href="{{ route('customer.sales-process.cart') }}">
                                 <i class="fa fa-shopping-cart"></i> <span style="top: 80%;" class="position-absolute start-0 translate-middle badge rounded-pill bg-danger">2</span>
                             </a>
                             <section class="header-cart-dropdown">

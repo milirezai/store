@@ -8,11 +8,13 @@
 
     @include('customer.layouts.header')
 
+
     <main id="main-body-one-col" class="main-body">
 
     @yield('content')
 
     </main>
+
 
 
     @include('customer.layouts.footer')
