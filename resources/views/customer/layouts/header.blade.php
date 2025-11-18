@@ -54,7 +54,7 @@
 
 
                         @guest
-                            <a href="{{ route('auth.customer.login-register-form') }}" class="btn btn-link text-decoration-none text-dark profile-button">
+                            <a href="{{ route('auth.customer.login-register.form') }}" class="btn btn-link text-decoration-none text-dark profile-button">
                                 <i class="fa fa-user-lock"></i>
                             </a>
                         @endguest
