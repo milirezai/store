@@ -9,6 +9,7 @@ use App\Models\User;
 class CartItem extends Model
 {
     use HasFactory;
+
     protected $fillable = ['user_id','product_id','color_id','guarantee_id','number'];
 
     public function product()

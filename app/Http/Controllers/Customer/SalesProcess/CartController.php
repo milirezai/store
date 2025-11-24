@@ -2,23 +2,31 @@
 
 namespace App\Http\Controllers\Customer\SalesProcess;
 
-use App\Http\Controllers\Controller;
-use App\Models\Market\CartItem;
-use App\Models\Market\Product;
 use Illuminate\Http\Request;
+use App\Models\Market\Product;
+use App\Models\Market\CartItem;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     public function cart()
     {
-        if (Auth::check()){
-            $cartItems = CartItem::where('user_id',Auth::user()->id)->get();
-            $relatedProducts = Product::all();
-            return view('customer.sales-process.cart', compact('cartItems', 'relatedProducts'));
+        if(Auth::check())
+        {
+            $cartItems = CartItem::where('user_id', Auth::user()->id)->get();
+            if($cartItems->count() > 0)
+            {
+                $relatedProducts = Product::all();
+                return view('customer.sales-process.cart', compact('cartItems', 'relatedProducts'));
+            }
+            else{
+                return redirect()->back();
+            }
+
         }
         else{
-            return redirect()->route('auth.customer.login-register.form');
+            return redirect()->route('auth.customer.login-register-form');
         }
     }
 
@@ -34,6 +42,8 @@ class CartController extends Controller
         }
         return redirect()->route('customer.sales-process.address-and-delivery');
     }
+
+
     public function addToCart(Product $product, Request $request)
     {
         if(Auth::check())
@@ -63,7 +73,7 @@ class CartController extends Controller
                     {
                         $cartItem->update(['number' => $request->number]);
                     }
-                    return back()->with('alert-section-success', 'محصول مورد نظر با موفقیت در سبد خرید آپدیت شد');
+                    return back();
                 }
             }
 
@@ -86,8 +96,10 @@ class CartController extends Controller
 
     public function removeFromCart(CartItem $cartItem)
     {
-        if ($cartItem->user_id == Auth::user()->id)
+        if($cartItem->user_id === Auth::user()->id)
+        {
             $cartItem->delete();
-        return redirect()->back();
+        }
+        return back();
     }
 }

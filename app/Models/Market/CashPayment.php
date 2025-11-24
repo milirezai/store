@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CashPayment extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $guarded = ['id'];
+
 
     public function payments()
     {

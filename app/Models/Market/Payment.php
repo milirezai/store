@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Payment extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = [];
+
+    protected $guarded = ['id'];
 
     public function user()
     {
