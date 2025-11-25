@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Http\Services\Payment\Payment;
 use App\Models\Market\Brand;
 use Illuminate\Http\Request;
 use App\Models\Content\Banner;
@@ -12,8 +13,21 @@ class HomeController extends Controller
 {
 
 
-    public function home()
+    public function home(Payment $payment)
     {
+            $payment->pay()
+                ->urlRequest('https://gateway.zibal.ir/v1/request')
+                ->merchant('zibal')
+                ->callbackUrl('http://localhost:8000/pay/request/verfiy')
+                ->amount(242342344)
+                ->description('232')
+                ->orderId(23)
+                ->mobile('09232001652')
+                ->nationalCode(4200603942)
+                ->request()->toGateway();
+
+
+
         $slideShowImages = Banner::orderBy('id','desc')->where('position', 0)->where('status', 1)->take(6)->get();
         $topBanners = Banner::orderBy('id','desc')->where('position', 1)->where('status', 1)->take(2)->get();
         $middleBanners = Banner::orderBy('id','desc')->where('position', 2)->where('status', 1)->take(2)->get();

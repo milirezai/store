@@ -3,13 +3,12 @@
 namespace App\Http\Services\Payment\ZibalGateway;
 
 use App\Http\Services\Payment\AbstractPaymentGateway;
-use App\Http\Services\Payment\PaymentTrait\PaymentRequest;
+use App\Http\Services\Payment\Support\Contract\PaymentGatewayContract;
+use function Livewire\str;
 
-class Zibal extends AbstractPaymentGateway
+class Zibal extends AbstractPaymentGateway implements PaymentGatewayContract
 {
-    use PaymentRequest;
 
-    protected $urlRequest = 'https://gateway.zibal.ir/v1/request';
     public function merchant(string $merchant)
     {
         $this->merchant = $merchant;
@@ -22,61 +21,41 @@ class Zibal extends AbstractPaymentGateway
         return $this;
     }
 
-    public function callbackUrl(string $callbackUrl)
-    {
-        $this->callbackUrl = $callbackUrl;
-        return $this;
-    }
-
     public function description(string $description)
     {
         $this->description = $description;
         return $this;
     }
 
-    public function orderId(int $orderId)
+    protected function buildRequestData()
     {
-        $this->orderId = $orderId;
-        return $this;
-    }
+        $requestData = [
+            'merchant' => $this->getMerchant(),
+            'amount' => $this->getAmount(),
+            'callbackUrl' => $this->getCallbackUrl(),
+            'description' => $this->getDescription(),
+            'orderId' => $this->getOrderId(),
+            'mobile' => $this->getMobile(),
+            'nationalCode' => (string) $this->getNationalCode(),
+        ];
 
-    public function mobile(int $mobile)
-    {
-        $this->mobile = $mobile;
-        return $this;
-    }
+        $filteredData = array_filter($requestData, function($value) {
+            return $value !== null && $value !== '';
+        });
 
-    public function nationalCode(int $nationalCode)
-    {
-        $this->nationalCode = $nationalCode;
-        return $this;
-    }
-
-    public function trackId()
-    {
-
-    }
-
-    public function result()
-    {
-
-    }
-
-    public function results()
-    {
-        return json_decode($this->message);
+        return $filteredData;
     }
 
     public function request()
     {
-        $add = json_encode([ "trackId" => 15966442233311, "result" => 100, "message" => "success"]);
-        $this->message = $add;
+        $this->setDefaultConfig('zibal');
+        $response = $this->sendRequest();
+        $this->response = $response;
         return $this;
     }
 
-    public function verify()
+    public function toGateway()
     {
-
+        return redirect('https://gateway.zibal.ir/start/'.$this->response->trackId);
     }
-
 }

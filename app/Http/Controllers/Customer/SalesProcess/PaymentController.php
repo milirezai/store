@@ -81,7 +81,11 @@ class PaymentController extends Controller
 
             $payment->withGateway(Zibal::class)
                 ->amount(2332)
-            ->request()->results()->result
+                ->description('c')
+                ->orderId(12)
+                ->mobile('09167516826')
+                ->nationalCode(4200603942)
+            ->request()->toGateway()
         );
 
         $order = Order::where('user_id', Auth::user()->id)->where('order_status', 0)->first();
