@@ -9,7 +9,7 @@ trait BasicPayRequest
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => $this->getUrlRequest(),
+            CURLOPT_URL => $this->getApiRequest(),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -27,6 +27,37 @@ trait BasicPayRequest
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
+
+        return $response;
+    }
+
+    protected function sendVerifyRequest()
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $this->getApiVerify(),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => '{
+         "merchant": "zibal",
+       "trackId": '.$this->getTrackId().'
+        }',
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Accept: application/json'
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+
 
         return $response;
     }

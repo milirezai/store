@@ -21,7 +21,7 @@ class Payment implements PaymentDriverContract
         $this->driver = $defaultDriver;
     }
 
-    public function pay()
+    public function gateway()
     {
         if ($this->driver === null)
             $this->setDriver();

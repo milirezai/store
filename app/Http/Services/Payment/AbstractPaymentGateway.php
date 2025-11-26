@@ -7,7 +7,9 @@ use App\Http\Services\Payment\Support\PaymentTrait\OptionalKey;
 abstract class AbstractPaymentGateway
 {
     use OptionalKey, BasicPayRequest;
-    protected $urlRequest;
+    protected $apiRequest;
+    protected $apiStart;
+    protected $apiVerify;
     protected $merchant;
     protected $amount;
     protected $callbackUrl;
@@ -16,12 +18,8 @@ abstract class AbstractPaymentGateway
     protected $mobile;
     protected $nationalCode;
     protected $response;
+    protected $trackId;
 
     protected abstract function buildRequestData();
 
-//    public abstract function trackId();
-//    public abstract function result();
-//    public abstract function results();
-//    public abstract function request();
-//    public abstract function verify();
-}
+ }

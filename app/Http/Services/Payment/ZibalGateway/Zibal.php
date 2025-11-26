@@ -9,21 +9,9 @@ use function Livewire\str;
 class Zibal extends AbstractPaymentGateway implements PaymentGatewayContract
 {
 
-    public function merchant(string $merchant)
-    {
-        $this->merchant = $merchant;
-        return $this;
-    }
-
     public function amount(int $amount)
     {
         $this->amount = $amount;
-        return $this;
-    }
-
-    public function description(string $description)
-    {
-        $this->description = $description;
         return $this;
     }
 
@@ -54,8 +42,19 @@ class Zibal extends AbstractPaymentGateway implements PaymentGatewayContract
         return $this;
     }
 
-    public function toGateway()
+    public function verify()
     {
-        return redirect('https://gateway.zibal.ir/start/'.$this->response->trackId);
+        $this->setDefaultConfig('zibal');
+        $response = $this->sendVerifyRequest();
+        $this->response = $response;
+        return $this;
+    }
+
+    public function pay()
+    {
+        if ($this->response->result === 100)
+            return redirect()->away($this->getApiStart().$this->response->trackId);
+        else
+            return false;
     }
 }

@@ -11,6 +11,8 @@ class OnlinePayment extends Model
     use HasFactory,SoftDeletes;
     protected $guarded = ['id'];
 
+    protected $casts = ['bank_first_response' => 'array'];
+
     public function payments()
     {
         return $this->morphMany('App\Models\Market\Payment','paymentable');
