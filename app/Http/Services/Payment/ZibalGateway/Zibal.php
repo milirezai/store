@@ -25,6 +25,7 @@ class Zibal extends AbstractPaymentGateway implements PaymentGatewayContract
             'orderId' => $this->getOrderId(),
             'mobile' => $this->getMobile(),
             'nationalCode' => (string) $this->getNationalCode(),
+            'trackId' => $this->getTrackId()
         ];
 
         $filteredData = array_filter($requestData, function($value) {
@@ -45,6 +46,7 @@ class Zibal extends AbstractPaymentGateway implements PaymentGatewayContract
     public function verify()
     {
         $this->setDefaultConfig('zibal');
+        dd($this->buildRequestData());
         $response = $this->sendVerifyRequest();
         $this->response = $response;
         return $this;
@@ -57,4 +59,14 @@ class Zibal extends AbstractPaymentGateway implements PaymentGatewayContract
         else
             return false;
     }
+
+
+    public function codeMessage(int $code)
+    {
+        if ($code != null)
+            return $this->getCodeMessage($code,'zibal');
+        else
+            return null;
+    }
+
 }

@@ -25,9 +25,10 @@ class Payment implements PaymentDriverContract
     {
         if ($this->driver === null)
             $this->setDriver();
-        $driver = config('payment.'.$this->driver);
+        $driver = config('payment.gateways.'.$this->driver);
         if ($driver['status'])
             return new Zibal();
+//            return new $driver['manager'];
         else
             null;
     }

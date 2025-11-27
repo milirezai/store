@@ -2,6 +2,8 @@
 
 namespace App\Http\Services\Payment\Support\PaymentTrait;
 
+use Illuminate\Support\Arr;
+
 trait OptionalKey
 {
     public function apiRequest(string $url)
@@ -105,24 +107,33 @@ trait OptionalKey
 
     protected function setDefaultConfig(string $drive)
     {
-        $drive = config('payment.'.$drive);
-            $this->getApiRequest() ?? $this->apiRequest($drive['apiRequest']);
-            $this->getApiStart() ?? $this->apiStart($drive['apiStart']);
-            $this->getApiVerify() ?? $this->apiVerify($drive['apiVerify']);
-            $this->getMerchant() ?? $this->merchant($drive['merchant']);
-            $this->getCallbackUrl() ?? $this->callbackUrl($drive['callback']);
-            $this->getDescription() ?? $this->description($drive['description']);
+        $drive = config('payment.gateways.'.$drive);
+            $this->getApiRequest() ?? $this->apiRequest($drive['api']['apiRequest']);
+            $this->getApiStart() ?? $this->apiStart($drive['api']['apiStart']);
+            $this->getApiVerify() ?? $this->apiVerify($drive['api']['apiVerify']);
+            $this->getMerchant() ?? $this->merchant($drive['settings']['merchant']);
+            $this->getCallbackUrl() ?? $this->callbackUrl($drive['settings']['callbackUrl']);
+//            $this->getDescription() ?? $this->description($drive['settings']['default_description']);
     }
-    public function getCodeMessage(int $code)
-    {
-        // کد رو میدیم بهمون معنی کد رو میده
-    }
+
     public function gatewayName()
     {
         return $this->getMerchant();
     }
-    public function response()
+    public function response($json = true)
     {
-        return $this->response;
+        if ($json)
+            return $this->response;
+        else
+        return json_decode($this->response);
+    }
+
+    protected function getCodeMessage(int $code, string $driver)
+    {
+        $codeInGateway = config('payment.gateways.' . $driver . '.codeMessage');
+        if (Arr::has($codeInGateway, $code)){
+            return Arr::get($codeInGateway, $code);
+        }
+        return null;
     }
 }

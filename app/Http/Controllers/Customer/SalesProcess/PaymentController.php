@@ -76,18 +76,6 @@ class PaymentController extends Controller
             ['payment_type' => 'required']
         );
 
-
-        dd(
-
-            $payment->withGateway(Zibal::class)
-                ->amount(2332)
-                ->description('c')
-                ->orderId(12)
-                ->mobile('09167516826')
-                ->nationalCode(4200603942)
-            ->request()->toGateway()
-        );
-
         $order = Order::where('user_id', Auth::user()->id)->where('order_status', 0)->first();
         $cartItems = CartItem::where('user_id', Auth::user()->id)->get();
         $cash_receiver = null;
@@ -118,6 +106,7 @@ class PaymentController extends Controller
             'status' => 1,
         ]);
 
+
         $payment = Payment::create(
             [
                 'amount' => $order->order_final_amount,
@@ -130,6 +119,20 @@ class PaymentController extends Controller
             ]
         );
 
+        if ($request->payment_type == 1) {
+
+            $requestPayment = $payment->gateway()->
+            callbackUrl(route('customer.sales-process.payment-call-back',[$order,$paymented]))
+                ->amount($order->order_final_amount)
+                ->request();
+            $paymented->bank_first_response = $requestPayment->response(true);
+            $paymented->save();
+
+
+            return $requestPayment->pay();
+
+        };
+
         $order->update(
             ['order_status' => 3]
         );
@@ -139,9 +142,139 @@ class PaymentController extends Controller
             $cartItem->delete();
         }
 
+
         return redirect()->route('customer.home')->with('success', 'سفارش شما با موفقیت ثبت شد');
+
+    }
+
+    public function paymentCallback(Order $order, OnlinePayment $onlinePayment,PaymentService $payment)
+    {
+        $onlinePaymentResponse = json_decode($onlinePayment->bank_first_response);
+        $verify = $payment->gateway()->trackId($onlinePaymentResponse->trackId)->verify();
+        $onlinePayment->bank_second_response = $verify->response(true);
+        $onlinePayment->save();
+        $cartItems = CartItem::where('user_id', Auth::user()->id)->get();
+        foreach($cartItems as $cartItem)
+        {
+            $cartItem->delete();
+        }
+        if ($verify->result === 200){
+            $order->update(
+                ['order_status' => 3]
+            );
+            return redirect()->route('customer.home');
+        }else{
+            return redirect()->route('customer.home');
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public function paymentService(PaymentService $payment)
+    {
+
+        // send request payment
+        $payment->gateway()
+            ->amount(24234234)
+            ->request();
+        // send request payment and go to payment getway
+        $payment->gateway()
+            ->amount(23424)
+            ->request()->pay();
+        // send request payment and get respone
+        $payment->gateway()
+            ->amount(454545)
+            ->request()
+            ->response(true);
+        // send request payment and save respone and got to payment getway
+        $paymentRequest = $payment->gateway()
+            ->amount(2432423)
+            ->request();
+        $respone = $paymentRequest->response();
+        $paymentRequest->pay();
+        // optional key fo request payment
+        # set description
+        $payment->gateway()
+            ->description('pay for mobile')
+            ->amount(2323)
+            ->request()->pay();
+        # set mobile
+        $payment->gateway()
+            ->mobile('09167516826')
+            ->amount(2323)
+            ->request()->pay();
+        # set orderId
+        $payment->gateway()
+            ->orderId(21)
+            ->amount(2323)
+            ->request()->pay();
+        # set nationalCode
+        $payment->gateway()
+            ->nationalCode(2300603942)
+            ->amount(424234)
+            ->request()->pay();
+        # set all options
+        $payment->gateway()
+            ->amount(2423424)
+            ->description('pry for mobile')
+            ->orderId(23)
+            ->mobile('09167516826')
+            ->nationalCode(42434234234)
+            ->request()->pay();
+        // setings request
+        # set api request
+        $payment->gateway()
+            ->apiRequest('https://gateway.zibal.ir/v1/request')
+            ->amount(23424)
+            ->request()->pay();
+        # set api apiStart
+        $payment->gateway()
+            ->apiStart('https://gateway.zibal.ir/start/')
+            ->amount(23424)
+            ->request()->pay();
+        # set api apiVerify
+        $payment->gateway()
+            ->apiVerify('https://gateway.zibal.ir/v1/verify')
+            ->amount(23424)
+            ->request()->pay();
+        # set call back url
+        $payment->gateway()
+            ->callbackUrl('http://localhost:8000/payment-callback')
+            ->amount(2423423)
+            ->request()->pay();
+        # set merchant
+        $payment->gateway()
+            ->merchant('zibal')
+            ->amount(242342)
+            ->request()->pay();
+        # set stings all
+        $payment->gateway()
+            ->merchant('zibal')
+            ->apiRequest('https://gateway.zibal.ir/v1/request')
+            ->apiStart('https://gateway.zibal.ir/start/')
+            ->apiVerify('https://gateway.zibal.ir/v1/verify')
+            ->callbackUrl('http://localhost:8000/payment-callback')
+            ->amount(23424)
+            ->request()->pay();
 
 
 
     }
+
+
+
+
+
+
+
+
+
 }

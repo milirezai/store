@@ -26,8 +26,6 @@ trait BasicPayRequest
 
         $response = curl_exec($curl);
         curl_close($curl);
-        $response = json_decode($response);
-
         return $response;
     }
 
@@ -44,10 +42,7 @@ trait BasicPayRequest
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => '{
-         "merchant": "zibal",
-       "trackId": '.$this->getTrackId().'
-        }',
+            CURLOPT_POSTFIELDS => json_encode($this->buildRequestData()),
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
                 'Accept: application/json'
@@ -56,7 +51,6 @@ trait BasicPayRequest
 
         $response = curl_exec($curl);
         curl_close($curl);
-        $response = json_decode($response);
 
 
         return $response;
