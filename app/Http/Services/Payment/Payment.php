@@ -4,6 +4,7 @@ namespace App\Http\Services\Payment;
 
 use App\Http\Services\Payment\Support\Contract\PaymentDriverContract;
 use App\Http\Services\Payment\ZibalGateway\Zibal;
+use Exception;
 
 class Payment implements PaymentDriverContract
 {
@@ -26,11 +27,14 @@ class Payment implements PaymentDriverContract
         if ($this->driver === null)
             $this->setDriver();
         $driver = config('payment.gateways.'.$this->driver);
-        if ($driver['status'])
-            return new Zibal();
-//            return new $driver['manager'];
+        if ($driver != null){
+            if ($driver['status'])
+                return new $driver['manager'];
+            else
+                return throw new Exception('gateway not serviseable');
+        }
         else
-            null;
+            return throw new Exception('gateway not supported');
     }
 }
 

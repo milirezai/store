@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer\SalesProcess;
 use App\Http\Services\Payment\ZibalGateway\Zibal;
 use App\Models\Market\Copan;
 use App\Models\Market\Order;
+use App\Models\Market\OrderItem;
 use Illuminate\Http\Request;
 use App\Models\Market\Payment;
 use App\Models\Market\CartItem;
@@ -70,11 +71,12 @@ class PaymentController extends Controller
         }
     }
 
-    public function paymentSubmit(Request $request, PaymentService $payment)
+    public function paymentSubmit(Request $request, PaymentService $paymentServise)
     {
         $request->validate(
             ['payment_type' => 'required']
         );
+
 
         $order = Order::where('user_id', Auth::user()->id)->where('order_status', 0)->first();
         $cartItems = CartItem::where('user_id', Auth::user()->id)->get();
@@ -121,7 +123,7 @@ class PaymentController extends Controller
 
         if ($request->payment_type == 1) {
 
-            $requestPayment = $payment->gateway()->
+            $requestPayment = $paymentServise->gateway()->
             callbackUrl(route('customer.sales-process.payment-call-back',[$order,$paymented]))
                 ->amount($order->order_final_amount)
                 ->request();
@@ -139,6 +141,19 @@ class PaymentController extends Controller
 
         foreach($cartItems as $cartItem)
         {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $cartItem->product_id,
+                'product' => $cartItem->product,
+                'amazing_sale_id' => $cartItem->product->activeAmazingSales()->id ?? null,
+                'amazing_sale_object' => $cartItem->product->activeAmazingSales() ?? null,
+                'amazing_sale_discount_amount' => empty($cartItem->product->activeAmazingSales()) ? 0 : $cartItem->cartItemProductPrice() * ($cartItem->product->activeAmazingSales()->percentage / 100),
+                'number' => $cartItem->number,
+                'final_product_price' => ($cartItem->product->price) - (empty($cartItem->product->activeAmazingSales()) ? 0 : $cartItem->cartItemProductPrice() * ($cartItem->product->activeAmazingSales()->percentage / 100)),
+                'final_total_price' => ($cartItem->product->price) - (empty($cartItem->product->activeAmazingSales()) ? 0 : $cartItem->cartItemProductPrice() * ($cartItem->product->activeAmazingSales()->percentage / 100)) * ($cartItem->number),
+                'color_id' => $cartItem->color_id,
+                'guarantee_id' => $cartItem->guarantee_id,
+            ]);
             $cartItem->delete();
         }
 
@@ -156,125 +171,28 @@ class PaymentController extends Controller
         $cartItems = CartItem::where('user_id', Auth::user()->id)->get();
         foreach($cartItems as $cartItem)
         {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $cartItem->product_id,
+                'product' => $cartItem->product,
+                'amazing_sale_id' => $cartItem->product->activeAmazingSales()->id ?? null,
+                'amazing_sale_object' => $cartItem->product->activeAmazingSales() ?? null,
+                'amazing_sale_discount_amount' => empty($cartItem->product->activeAmazingSales()) ? 0 : $cartItem->cartItemProductPrice() * ($cartItem->product->activeAmazingSales()->percentage / 100),
+                'number' => $cartItem->number,
+                'final_product_price' => ($cartItem->product->price) - (empty($cartItem->product->activeAmazingSales()) ? 0 : $cartItem->cartItemProductPrice() * ($cartItem->product->activeAmazingSales()->percentage / 100)),
+                'final_total_price' => ($cartItem->product->price) - (empty($cartItem->product->activeAmazingSales()) ? 0 : $cartItem->cartItemProductPrice() * ($cartItem->product->activeAmazingSales()->percentage / 100)) * ($cartItem->number),
+                'color_id' => $cartItem->color_id,
+                'guarantee_id' => $cartItem->guarantee_id,
+            ]);
             $cartItem->delete();
         }
-        if ($verify->result === 200){
+        if ($verify->response(false)->result === 100){
             $order->update(
                 ['order_status' => 3]
             );
-            return redirect()->route('customer.home');
+            return redirect()->route('customer.home')->with('success', 'سفارش شما با موفقیت ثبت شد');
         }else{
-            return redirect()->route('customer.home');
+            return redirect()->route('customer.home')->with('danger', 'پرداخت ناموفق بود');
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-    public function paymentService(PaymentService $payment)
-    {
-
-        // send request payment
-        $payment->gateway()
-            ->amount(24234234)
-            ->request();
-        // send request payment and go to payment getway
-        $payment->gateway()
-            ->amount(23424)
-            ->request()->pay();
-        // send request payment and get respone
-        $payment->gateway()
-            ->amount(454545)
-            ->request()
-            ->response(true);
-        // send request payment and save respone and got to payment getway
-        $paymentRequest = $payment->gateway()
-            ->amount(2432423)
-            ->request();
-        $respone = $paymentRequest->response();
-        $paymentRequest->pay();
-        // optional key fo request payment
-        # set description
-        $payment->gateway()
-            ->description('pay for mobile')
-            ->amount(2323)
-            ->request()->pay();
-        # set mobile
-        $payment->gateway()
-            ->mobile('09167516826')
-            ->amount(2323)
-            ->request()->pay();
-        # set orderId
-        $payment->gateway()
-            ->orderId(21)
-            ->amount(2323)
-            ->request()->pay();
-        # set nationalCode
-        $payment->gateway()
-            ->nationalCode(2300603942)
-            ->amount(424234)
-            ->request()->pay();
-        # set all options
-        $payment->gateway()
-            ->amount(2423424)
-            ->description('pry for mobile')
-            ->orderId(23)
-            ->mobile('09167516826')
-            ->nationalCode(42434234234)
-            ->request()->pay();
-        // setings request
-        # set api request
-        $payment->gateway()
-            ->apiRequest('https://gateway.zibal.ir/v1/request')
-            ->amount(23424)
-            ->request()->pay();
-        # set api apiStart
-        $payment->gateway()
-            ->apiStart('https://gateway.zibal.ir/start/')
-            ->amount(23424)
-            ->request()->pay();
-        # set api apiVerify
-        $payment->gateway()
-            ->apiVerify('https://gateway.zibal.ir/v1/verify')
-            ->amount(23424)
-            ->request()->pay();
-        # set call back url
-        $payment->gateway()
-            ->callbackUrl('http://localhost:8000/payment-callback')
-            ->amount(2423423)
-            ->request()->pay();
-        # set merchant
-        $payment->gateway()
-            ->merchant('zibal')
-            ->amount(242342)
-            ->request()->pay();
-        # set stings all
-        $payment->gateway()
-            ->merchant('zibal')
-            ->apiRequest('https://gateway.zibal.ir/v1/request')
-            ->apiStart('https://gateway.zibal.ir/start/')
-            ->apiVerify('https://gateway.zibal.ir/v1/verify')
-            ->callbackUrl('http://localhost:8000/payment-callback')
-            ->amount(23424)
-            ->request()->pay();
-
-
-
-    }
-
-
-
-
-
-
-
-
-
 }

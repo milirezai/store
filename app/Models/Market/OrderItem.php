@@ -10,6 +10,8 @@ class OrderItem extends Model
 {
     use HasFactory,SoftDeletes;
 
+    protected $guarded = ['id'];
+
     public function order()
     {
         return $this->belongsTo(Order::class);

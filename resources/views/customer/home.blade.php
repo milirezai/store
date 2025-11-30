@@ -8,9 +8,14 @@
 
     <!-- start slideshow -->
     <section class="container-xxl my-4">
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
+            </div>
+        @endif
+        @if (session('danger'))
+            <div class="alert alert-danger">
+                {{ session('danger') }}
             </div>
         @endif
         <section class="row">

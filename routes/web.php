@@ -43,6 +43,11 @@ use App\Http\Controllers\Customer\SalesProcess\CartController;
 use App\Http\Controllers\Customer\SalesProcess\ProfileCompletionController;
 use App\Http\Controllers\Customer\SalesProcess\AddressController;
 use App\Http\Controllers\Customer\SalesProcess\PaymentController as CustomerPaymentController;
+use App\Http\Controllers\Customer\Profile\OrderController as ProfileOrderController;
+use App\Http\Controllers\Customer\Profile\FavoriteController;
+use App\Http\Controllers\Customer\Profile\ProfileController;
+use App\Http\Controllers\Customer\Profile\AddressController as ProfileAddressController;
+
 
 Route::prefix('admin')->namespace('Admin')->group(function(){
 
@@ -498,6 +503,18 @@ Route::namespace('Auth')->group(function (){
 });
 
 
+// profile
+Route::namespace ('Profile')->group(function () {
+
+    Route::get('/orders', [ProfileOrderController::class, 'index'])->name('customer.profile.orders');
+    Route::get('/my-favorites', [FavoriteController::class, 'index'])->name('customer.profile.my-favorites');
+    Route::get('/my-favorites/delete/{product}', [FavoriteController::class, 'delete'])->name('customer.profile.my-favorites.delete');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('customer.profile.profile');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('customer.profile.profile.update');
+    Route::get('/my-addresses', [ProfileAddressController::class, 'index'])->name('customer.profile.my-addresses');
+
+
+});
 
 
 

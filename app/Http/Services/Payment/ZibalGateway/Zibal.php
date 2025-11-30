@@ -46,7 +46,6 @@ class Zibal extends AbstractPaymentGateway implements PaymentGatewayContract
     public function verify()
     {
         $this->setDefaultConfig('zibal');
-        dd($this->buildRequestData());
         $response = $this->sendVerifyRequest();
         $this->response = $response;
         return $this;
@@ -54,8 +53,8 @@ class Zibal extends AbstractPaymentGateway implements PaymentGatewayContract
 
     public function pay()
     {
-        if ($this->response->result === 100)
-            return redirect()->away($this->getApiStart().$this->response->trackId);
+        if (json_decode($this->response)->result === 100)
+            return redirect()->away($this->getApiStart().json_decode($this->response)->trackId);
         else
             return false;
     }

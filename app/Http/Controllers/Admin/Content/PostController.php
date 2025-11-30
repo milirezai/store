@@ -8,6 +8,7 @@ use App\Http\Services\Image\ImageService;
 use App\Models\Content\Post;
 use App\Models\Content\PostCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -59,6 +60,12 @@ class PostController extends Controller
 
     public function update(PostRequest $request, ImageService $imageService, Post $post)
     {
+        $gateResponse = Gate::inspect('update-post');
+        if ($gateResponse->allowed()){
+
+        }else{
+            return redirect()->route('admin.content.post.index')->with('swal-error', $gateResponse->message());
+        }
         $inputs = $request->all();
         if($request->hasFile('image'))
         {
