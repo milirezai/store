@@ -30,7 +30,7 @@ class PostController extends Controller
     public function store(PostRequest $request,ImageService $imageService)
     {
         $inputs = $request->all();
-        $inputs['author_id'] = 1;
+        $inputs['author_id'] = auth()->user()->id;
         $inputs['published_at'] = date('Y-m-d H:i:s',(int)substr($inputs['published_at'],0,10));
         if ($request->hasFile('image'))
         {
@@ -60,12 +60,20 @@ class PostController extends Controller
 
     public function update(PostRequest $request, ImageService $imageService, Post $post)
     {
-        $gateResponse = Gate::inspect('update-post');
-        if ($gateResponse->allowed()){
 
-        }else{
-            return redirect()->route('admin.content.post.index')->with('swal-error', $gateResponse->message());
-        }
+//        if (!Gate::allows('update-post',$post)){
+//            abort(403);
+//        }
+
+//        // policy
+//        if ($request->user()->can('update',$post)){
+//            dd('i can you');
+//        }
+//        if ($request->user()->cannot('update',$post)){
+//            dd('i can not you');
+//        }
+//        $this->authorize('update',$post);
+
         $inputs = $request->all();
         if($request->hasFile('image'))
         {
@@ -92,6 +100,7 @@ class PostController extends Controller
         $inputs['published_at'] = date('Y-m-d H:i:s',(int)substr($inputs['published_at'],0,10));
         $post->update($inputs);
         return redirect()->route('admin.content.post.index')->with('swal-success','پست  با موفقیت ویرایش شد!');
+
     }
 
 

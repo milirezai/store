@@ -41,7 +41,7 @@
                                 <input type="text" name="first_name" class="form-control form-control-sm" value="{{ old('first_name', $admin->first_name) }}">
                             </div>
                             @error('first_name')
-                            <span class="alert-required text-danger" role="alert">
+                            <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                 <strong>
                                     {{ $message }}
                                 </strong>
@@ -54,7 +54,7 @@
                                 <input type="text" name="last_name" class="form-control form-control-sm" value="{{ old('last_name', $admin->last_name) }}">
                             </div>
                             @error('last_name')
-                            <span class="alert-required text-danger" role="alert">
+                            <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                 <strong>
                                     {{ $message }}
                                 </strong>
@@ -66,12 +66,10 @@
                             <div class="form-group">
                                 <label for="">تصویر</label>
                                 <input type="file" name="profile_photo_path" class="form-control form-control-sm">
-                                @if($admin->profile_photo_path)
-                                    <img  src="{{ asset($admin->profile_photo_path) }}" alt="" width="120" height="70" class="mt-3">
-                                @endif
+                                <img src="{{ asset($admin->profile_photo_path) }}" alt="" width="100" height="50" class="mt-3">
                             </div>
                             @error('profile_photo_path')
-                        <span class="alert-required text-danger" role="alert">
+                            <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                 <strong>
                                     {{ $message }}
                                 </strong>

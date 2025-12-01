@@ -272,7 +272,7 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
             Route::get('/create', [PostController::class, 'create'])->name('admin.content.post.create');
             Route::post('/store', [PostController::class, 'store'])->name('admin.content.post.store');
             Route::get('/edit/{post}', [PostController::class, 'edit'])->name('admin.content.post.edit');
-            Route::put('/update/{post}', [PostController::class, 'update'])->name('admin.content.post.update');
+            Route::put('/update/{post}', [PostController::class, 'update'])->name('admin.content.post.update')->can('update','post');
             Route::delete('/destroy/{post}', [PostController::class, 'destroy'])->name('admin.content.post.destroy');
             Route::get('/status/{post}', [PostController::class, 'status'])->name('admin.content.post.status');
             Route::get('/commentable/{post}', [PostController::class, 'commentable'])->name('admin.content.post.commentable');
@@ -295,16 +295,17 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
     Route::prefix('user')->namespace('User')->group(function(){
 
         //admin-user
-        Route::prefix('admin-user')->group(function(){
+        Route::prefix('admin-user')->group(function () {
             Route::get('/', [AdminUserController::class, 'index'])->name('admin.user.admin-user.index');
             Route::get('/create', [AdminUserController::class, 'create'])->name('admin.user.admin-user.create');
             Route::post('/store', [AdminUserController::class, 'store'])->name('admin.user.admin-user.store');
             Route::get('/edit/{admin}', [AdminUserController::class, 'edit'])->name('admin.user.admin-user.edit');
             Route::put('/update/{admin}', [AdminUserController::class, 'update'])->name('admin.user.admin-user.update');
             Route::delete('/destroy/{admin}', [AdminUserController::class, 'destroy'])->name('admin.user.admin-user.destroy');
-            Route::get('/status/{admin}', [AdminUserController::class, 'status'])->name('admin.user.admin-user.status');
-            Route::get('/activation/{admin}', [AdminUserController::class, 'activation'])->name('admin.user.admin-user.activation');
-
+            Route::get('/status/{user}', [AdminUserController::class, 'status'])->name('admin.user.admin-user.status');
+            Route::get('/activation/{user}', [AdminUserController::class, 'activation'])->name('admin.user.admin-user.activation');
+            Route::get('/roles/{admin}', [AdminUserController::class, 'roles'])->name('admin.user.admin-user.roles');
+            Route::post('/roles/{admin}/store', [AdminUserController::class, 'rolesStore'])->name('admin.user.admin-user.roles.store');
         });
 
         //customer
