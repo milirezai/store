@@ -76,10 +76,13 @@
 
 
             <section class="sidebar-part-title">بخش محتوی</section>
-            <a href="{{ route('admin.content.category.index') }}" class="sidebar-link">
-                <i class="fas fa-bars"></i>
-                <span>دسته بندی</span>
-            </a>
+            @can('view')
+                <a href="{{ route('admin.content.category.index') }}" class="sidebar-link">
+                    <i class="fas fa-bars"></i>
+                    <span>دسته بندی</span>
+                </a>
+            @endcan
+
             <a href="{{ route('admin.content.post.index') }}" class="sidebar-link">
                 <i class="fas fa-bars"></i>
                 <span>پست ها</span>
