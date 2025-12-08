@@ -92,9 +92,7 @@
 
                                     <section class="payment-alert alert alert-primary d-flex align-items-center p-2" role="alert">
                                         <i class="fa fa-info-circle flex-shrink-0 me-2"></i>
-                                        <secrion>
-                                            برای پیشگیری از انتقال ویروس کرونا پیشنهاد می کنیم روش پرداخت اینترنتی رو پرداخت کنید.
-                                        </secrion>
+
                                     </section>
 
 
@@ -112,6 +110,7 @@
                                                 درگاه پرداخت زرین پال
                                             </section>
                                         </label>
+
 
                                         <section class="mb-2"></section>
 
